@@ -1,0 +1,56 @@
+olcsó clouud: OVH kimsufi vagy OVH vps
+
+---- 1. óra ----
+2-es csoport
+unidev.infra-cloud.org
+Belépés
+  Student2
+  devsecopsStudent
+  Proxmox VE auth.
+
+IP címkiosztások: arato.inf.unideb.hu/bertok.csanad/devsecops.pdf
+  2. csoport
+    a. Kiosztott IP tartomány: 20.1.0.26,...,20.1.0.39
+    b. Port forward: 172.22.215.93:20002 —> 20.1.0.26:22
+Rácsatlakozni powershell-ből: ssh -p 20002 student@172.22.215.93 (student jelszó)
+vagy MobaXterm-ből is lehet
+
+mkdir, mappába egy "Dockerfile" aminek a tartalmát AI legenerálja
+(pl.
+    FROM ubuntu:24.04
+
+    ENV DEBIAN_FRONTEND=noninteractive
+
+    # Update packages and install Python 3
+    RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
+    
+    # Set the working directory
+    WORKDIR /app
+    
+    # Create a simple sample website page
+    RUN echo "<DOCTYPE html><html><body style='font-family: Arial;'><h1>Hello from Ubuntu 24.04!</h1><p>Your Docker website is up and running.</p></body></html>" > index.html
+    
+    # Expose the web server port (ez csak látszat, amúgy nem csinál kb. semmit)
+    EXPOSE 8000
+    
+    # Start the Python HTTP server
+    CMD ["python3", "-m", "http.server", "8000"])
+
+CMD "klasszik" - tail -f /dev/null (ezt használjuk hogy a konténer folyamatosan fusson akkor is ha semmi más nem fut rajta, teszt konténerekhez jó)
+
+Konténer image készítése/futtatása:
+  docker images - elmondja milyenek vannak
+  docker build -t [név]:[verziónév] [mappa] - csinál egy image-t a konténerből (nem kell verziónevet és kettőspontot írni, de lehet)
+  docker run --name [név] [imagenév] - első indításhoz/létrehozáshoz;
+    -d - detached, háttérben fut
+    -p [főgép portja]:[konténer portja] - port átirányítása
+  docker ps - milyen konténerek futnak
+  docker ps -a - a megállt konténereket is kiírja
+  docker rm [név] - konténer kitörlése (futót nem lehet, de docker stop [név] && docker rm [név] jó), név helyett lehet ID
+  docker stop [név] - leállítja a konténer
+  docker rmi [név] - kitörli az image-t
+  docker inspect [név] - konténer megnézése
+  docker logs [név] - hibák megnézése
+    -f - megnyitja a logolást és várja a logokat (follow)
+
+
