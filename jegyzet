@@ -1,4 +1,6 @@
 olcsó clouud: OVH kimsufi vagy OVH vps
+linux billentyűzet beállítás:
+  - cmd-ben "setxkbmap hu" magyarra állítja a billentyűzetet
 
 ---- 1. óra ----
 2-es csoport
@@ -43,7 +45,9 @@ Konténer image készítése/futtatása:
   docker build -t [név]:[verziónév] [mappa] - csinál egy image-t a konténerből (nem kell verziónevet és kettőspontot írni, de lehet)
   docker run --name [név] [imagenév] - első indításhoz/létrehozáshoz;
     -d - detached, háttérben fut
-    -p [főgép portja]:[konténer portja] - port átirányítása
+    -p [főgép portja]:[konténer portja] - port átirányítása, pl. 20002:8000, főgép portja bármi nagy számra átírható, a konténer portja nem változtatható
+    -v [főgép állománya]:[konténer állománya] - volume mount, egy külső állományt a konténeren belül elérhetővé tesz (pl. -v /home/user/Kepek:/home/user/images)
+      - ha végére "(:ro)"-t rakunk akkor read only lesz belülről/konténerről (pl. -v /home/user/Kepek:/home/user/images(:ro) )
   docker ps - milyen konténerek futnak
   docker ps -a - a megállt konténereket is kiírja
   docker rm [név] - konténer kitörlése (futót nem lehet, de docker stop [név] && docker rm [név] jó), név helyett lehet ID
@@ -52,5 +56,19 @@ Konténer image készítése/futtatása:
   docker inspect [név] - konténer megnézése
   docker logs [név] - hibák megnézése
     -f - megnyitja a logolást és várja a logokat (follow)
+  docker start [név] - elindítja a konténert
+  docker exec [név] [parancs] - lefuttat egy parancsot, bash az amivel "belépünk" (de ehhez kell az -i és -t)
+    -it - interactive
+    -u [név] - felhasználó kiválasztása
+(2.óra)
+konténer - ephemeral/temporary
+("ne használja senki, órán se lesz") docker commit - egy konténerből image-t készít
+mindenki aki docker parancsokat tud futtatni az technikailag admin jogosultsággal rendelkezik, hiszen fel tudja csatolni az egész fájlrendszert mint megosztott mappa
+Portainer:
+  - https://docs.portainer.io/start/install-ce/server/docker/linux
+  - konténereket láthatjuk webappon keresztül
+  - setup token logsból
+  - .sock felmountolása veszélyes, ehhez viszont szükséges
+
 
 
