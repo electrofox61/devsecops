@@ -1,7 +1,7 @@
 olcsó clouud: OVH kimsufi vagy OVH vps
 linux billentyűzet beállítás:
   - cmd-ben "setxkbmap hu" magyarra állítja a billentyűzetet
-
+egyszerű weboldal/tesztelés: Grav cms
 ---- 1. óra ----
 2-es csoport
 unidev.infra-cloud.org
@@ -60,7 +60,7 @@ Konténer image készítése/futtatása:
   docker exec [név] [parancs] - lefuttat egy parancsot, bash az amivel "belépünk" (de ehhez kell az -i és -t)
     -it - interactive
     -u [név] - felhasználó kiválasztása
-(2.óra)
+(2. óra)
 konténer - ephemeral/temporary
 ("ne használja senki, órán se lesz") docker commit - egy konténerből image-t készít
 mindenki aki docker parancsokat tud futtatni az technikailag admin jogosultsággal rendelkezik, hiszen fel tudja csatolni az egész fájlrendszert mint megosztott mappa
@@ -70,5 +70,19 @@ Portainer:
   - setup token logsból
   - .sock felmountolása veszélyes, ehhez viszont szükséges
 
+(3. óra)
+docker-compose.yaml - meglévő imageket hogyan hozzon létre (konténerekké), milyen kapcsolatokkal, egy közös hálózatba teszi őket saját névfeloldással (domainekkel, pl. backend:8000) (ai megírja)
+  services:
+    frontend:
+      ...
+    backend:
+      ...
+    db:
+      ...
+  networking
+    ...
+  volumes:
+    ...
 
-
+Grav: wget <link>, unzip, stb.
+(+pont ha grav-basictutorial-folder structure, és csak azok lehessenek láthatóak amiket látnia kell)
