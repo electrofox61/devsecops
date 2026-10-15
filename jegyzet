@@ -90,3 +90,31 @@ docker-compose.yaml - meglévő imageket hogyan hozzon létre (konténerekké), 
 
 Grav: wget <link>, unzip, stb.
 (+pont ha grav-basictutorial-folder structure, és csak azok lehessenek láthatóak amiket látnia kell)
+
+
+(5. óra)
+image: - online szerzett image
+build: - mi általunk épített fájlok + dockerfile (csak akkor buildeli ha nem létezilk)
+/etc/docker/daemon.json - minden docker telepítésnél ajánlott létrehozni:
+  "bip": "10.8.0.1/24",        -- minden container ami nem compose-sal van létrehozva ebben az ip tartományban legyen
+  "deafult-address-pools": [   -- minden compose-sal létrehozott docker(/service)
+    {
+      "base": "10.9.0.0/16",
+      "size": 24,              -- egy docker compose tartomány (pl. itt csak ~250 lehet egy docker compose-ban)
+    }
+  ]
+
+docker-compose-ban is lehet ip-ket definiálni, serviceknél
+networks:
+  nev: 
+    ipv4_address: ...
+és a végén kell egy
+networks:
+  nev:
+    driver: bridge (vagy host)
+    ipam:
+      config:
+        - subnet: x.x.x.x/x
+        - gatway: x.x.x.x
+
+docker compose-ban lehet még a ports: részen belül a port elé ip-t is írni, biztonság szempontjából ha van reverse proxy akkor 127:0:0:1:port:port az ideális
