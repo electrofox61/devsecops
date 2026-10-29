@@ -118,3 +118,7 @@ networks:
         - gatway: x.x.x.x
 
 docker compose-ban lehet még a ports: részen belül a port elé ip-t is írni, biztonság szempontjából ha van reverse proxy akkor 127:0:0:1:port:port az ideális
+
+(6. óra)
+Haproxy, nginx proxy manager, caddy
+nginx proxy managert használtunk, hivatalos weboldalról alapbkonfig, tanúsítvány, port binding
