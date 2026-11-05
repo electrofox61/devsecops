@@ -3,8 +3,11 @@ linux billentyűzet beállítás:
   - cmd-ben "setxkbmap hu" magyarra állítja a billentyűzetet
 egyszerű weboldal/tesztelés: Grav cms
 OpencCode: kódoláshoz használható ai, tud fájlokat módosítani
-
-
+nextcloud: cloud szerver saját használatra
+jellyfin: médialejátszó (streaming alternatíva saját médiaszerver)
+immich: google photos alternatíva, self hosted fotószerver
+navidrone: zene 
+stirling-pdf: self hosted pdf editor
 
 ---- 1. óra ----
 2-es csoport
@@ -88,6 +91,12 @@ docker-compose.yaml - meglévő imageket hogyan hozzon létre (konténerekké), 
   volumes:
     ...
 
+docker compose up/down
+  - --build  
+  - -p <név> -- (profile) a konténernek a nevején ez lesz, és a volume-ok előtt is 
+  - -d -- (detached) háttérbe küldés
+  - -f <név> -- megadhatod a docker-compose fájl nevét
+
 Grav: wget <link>, unzip, stb.
 (+pont ha grav-basictutorial-folder structure, és csak azok lehessenek láthatóak amiket látnia kell)
 
@@ -122,3 +131,41 @@ docker compose-ban lehet még a ports: részen belül a port elé ip-t is írni,
 (6. óra)
 Haproxy, nginx proxy manager, caddy
 nginx proxy managert használtunk, hivatalos weboldalról alapbkonfig, tanúsítvány, port binding
+
+(7. óra)
+
+sqlite password reset/megnézni az emailt ami regisztrálva van az adatbáziba (docker -> npman-app-1 bash -> sqlite3 -> select)
+  - docker exec -it npman-app-1 bash
+  - apt install sqlite3
+  - sqlite3 /data/database.lite
+  - .tables
+    - select * from <table>
+    VAGY
+    - UPDATE user SET is_deleted=1
+    VAGY csak kitörlöd a data mappát és újracomposolod (ekkor elveszik minden más beállítás is)
+
+NginxProxyManager
+- Stream hozzáadása: külső port, ip (itt a gazdagép ip-je), belső port
+  - portot kell még állítani a dockerhez
+    - compose-ba be lehet írni a bindolást (nem ajánlott)
+    - lehet a drivert host-ra állítani hogy egyből oda irányítsa át (ezt szokták)
+    - nem használunk nginx proxy managert (ez valójában domainekre van kitalálva, webes átirányításra, nem portátirányításokra van, ha csak egy gépen belül mozunk akkor nem ajánlott)
+Haproxy (csak gyors átnéztük)
+- sudo apt install haproxy
+- AI konfig fájl a konfig fájl végére
+- sudo systemctl enable --now haproxy
+- (sudo haproxy -f /etc/haproxy/haproxy.cfg -c -- megmondja hogy jó-e a konfig fájl)
+- sudo systemctl restart haproxy
+
+Monitoring (Alkalmazás monitoring)
+- Grafana a megjelenítő általában, és valami más fut alatta (egy log shipper/ingester, pl. Prometheus)
+- Prometheus modulokból álló, minden monitorozható dologhoz lehet modult letölteni/csinálni
+- arato-n ott van a prometheus konfig fájl és a docker compose fájl
+  - node exporter -- általános linux szerver monitorozó modul
+  - cAdvisor -- konténerek állapotát nézi
+  - egy compose-ban vannak, egy gépen, így látják egymást már csak a név alapján is
+- miután a konténer készen van, weben elérjük (név/jelszó a konfigban van)
+- dashboard-ot manuálisan nehéz csinálni, importáljuk
+- Prometheushoz összekötés: connections -> add new connection -> prometheus -> datasource -> server url: http://prometheus:9090 -> save and test
+- Exporter importálása: grafana hivatalos weboldala -> megkeresed amelyik tetszik (pl. node exporter full, 1860) -> copy id to clipboard -> grafana oldalunkon dashboards -> import -> id-hoz beírod az id-t
+
