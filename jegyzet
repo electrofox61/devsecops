@@ -8,6 +8,7 @@ jellyfin: médialejátszó (streaming alternatíva saját médiaszerver)
 immich: google photos alternatíva, self hosted fotószerver
 navidrone: zene 
 stirling-pdf: self hosted pdf editor
+bpytop: apt ami jó processzornézésre
 
 ---- 1. óra ----
 2-es csoport
@@ -169,3 +170,15 @@ Monitoring (Alkalmazás monitoring)
 - Prometheushoz összekötés: connections -> add new connection -> prometheus -> datasource -> server url: http://prometheus:9090 -> save and test
 - Exporter importálása: grafana hivatalos weboldala -> megkeresed amelyik tetszik (pl. node exporter full, 1860) -> copy id to clipboard -> grafana oldalunkon dashboards -> import -> id-hoz beírod az id-t
 
+(8. óra)
+
+docker volume prune (-a veszélyesebb, minden elnevezett volume is)
+docker image prune (-a veszélyesebb, minden image aminek nincs konténere)
+docker stop nev && docker rm nev (container törlés)
+
+ElasticSearch (OpenSearch)
+(ELK stash - ez a három réteg alkalmazása)
+- Logok rendszerezéséhez van, ezeket a logokat egy másik alkalmazás (log shipper) gyűjti, és vizualizációhoz kell egy másik
+- Log shipperek: FileBeat (több erőforrás, több formátum), FluentBit (kevesebb erőforrás, kevesebb formátumot ismer fel) vagy LogSearch (régebbi)
+- Vizualizáció: Kibana vagy OpenSearch Dashboard
+- egy fájl lehet sok log, vagy lehet több fájl és mindegyik egy külön log
